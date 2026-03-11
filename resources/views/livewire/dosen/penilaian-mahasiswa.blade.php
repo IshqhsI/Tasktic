@@ -45,29 +45,29 @@
     {{-- ── Anomali warning ── --}}
     @if($anomali['total'] > 0)
     <div class="mb-4 flex items-start gap-3 px-4 py-3 rounded-xl
-                {{ $anomali['total'] >= 5
+                {{ $anomali['risk_level'] === 'tinggi'
                     ? 'bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800'
                     : 'bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800' }}">
-        <svg class="w-4 h-4 mt-0.5 flex-shrink-0 {{ $anomali['total'] >= 5 ? 'text-red-500' : 'text-amber-500' }}"
+        <svg class="w-4 h-4 mt-0.5 flex-shrink-0 {{ $anomali['risk_level'] === 'tinggi' ? 'text-red-500' : 'text-amber-500' }}"
              fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v4m0 4h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
         </svg>
         <div class="text-xs">
-            <p class="font-700 {{ $anomali['total'] >= 5 ? 'text-red-700 dark:text-red-400' : 'text-amber-700 dark:text-amber-400' }}">
-                {{ $anomali['total'] }} aktivitas mencurigakan terdeteksi
+            <p class="font-700 {{ $anomali['risk_level'] === 'tinggi' ? 'text-red-700 dark:text-red-400' : 'text-amber-700 dark:text-amber-400' }}">
+                Risiko {{ ucfirst($anomali['risk_level']) }} — skor {{ $anomali['risk_score'] }}
             </p>
             <p class="text-slate-500 dark:text-slate-400 mt-0.5 flex flex-wrap gap-3">
-                @if($anomali['paste'] > 0)
-                <span>Percobaan paste: <strong>{{ $anomali['paste'] }}</strong></span>
+                @if($anomali['paste_count'] > 0)
+                <span>Percobaan paste: <strong>{{ $anomali['paste_count'] }}</strong></span>
                 @endif
-                @if($anomali['tab_switch'] > 0)
-                <span>Pindah tab: <strong>{{ $anomali['tab_switch'] }}</strong></span>
-                @endif
-                @if($anomali['auto_cleared'] > 0)
-                <span>Auto-cleared: <strong>{{ $anomali['auto_cleared'] }}</strong></span>
+                @if($anomali['tab_switch_count'] > 0)
+                <span>Pindah tab: <strong>{{ $anomali['tab_switch_count'] }}</strong></span>
                 @endif
                 @if($anomali['suspicious_snapshots'] > 0)
                 <span>Snapshot mencurigakan: <strong>{{ $anomali['suspicious_snapshots'] }}</strong></span>
+                @endif
+                @if($anomali['suspicious_delta'] > 0)
+                <span>Delta mencurigakan: <strong>{{ $anomali['suspicious_delta'] }}</strong></span>
                 @endif
             </p>
         </div>
