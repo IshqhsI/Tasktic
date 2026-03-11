@@ -127,28 +127,28 @@
                                 @click="position($el); open = !open"
                                 @click.away="open = false"
                                 class="flex items-center gap-1.5 text-[11px] font-600 px-2 py-1 rounded-full
-                                       {{ $anomali['total'] >= 5
+                                       {{ $anomali['risk_level'] === 'tinggi'
                                            ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
                                            : 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400' }}">
                                 <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v4m0 4h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
                                 </svg>
-                                {{ $anomali['total'] }} anomali
+                                Risiko {{ ucfirst($anomali['risk_level']) }}
                             </button>
-                            {{-- Tooltip teleport ke body supaya tidak terpotong tabel --}}
                             <template x-teleport="body">
                                 <div x-show="open"
                                      x-cloak
                                      @click.away="open = false"
                                      :style="`position:fixed; top:${top}px; left:${left}px; z-index:9999`"
                                      class="w-52 bg-white dark:bg-navy-800 rounded-xl shadow-xl border border-slate-100 dark:border-navy-700 p-3 text-xs space-y-1.5">
-                                    <p class="font-700 text-slate-700 dark:text-white mb-2">Detail Anomali</p>
+                                    <p class="font-700 text-slate-700 dark:text-white mb-2">
+                                        Detail — Skor {{ $anomali['risk_score'] }}
+                                    </p>
                                     @foreach([
-                                        'paste'                => 'Percobaan paste',
-                                        'tab_switch'           => 'Pindah tab',
-                                        'auto_cleared'         => 'Auto-cleared',
-                                        'page_leave'           => 'Tinggalkan halaman',
+                                        'paste_count'          => 'Percobaan paste',
+                                        'tab_switch_count'     => 'Pindah tab',
                                         'suspicious_snapshots' => 'Snapshot mencurigakan',
+                                        'suspicious_delta'     => 'Delta mencurigakan',
                                     ] as $key => $label)
                                     @if(($anomali[$key] ?? 0) > 0)
                                     <div class="flex justify-between gap-3">
